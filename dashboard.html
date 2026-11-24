@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — SkillMatch</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    <div class="glow-overlay"></div>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">SkillMatch</div>
+        <ul class="nav-menu">
+            <li><a href="/dashboard" class="nav-link active">Dashboard</a></li>
+            <li><a href="/upload" class="nav-link">Upload</a></li>
+            <li><a href="/history" class="nav-link">History</a></li>
+            <li><a href="/features" class="nav-link">Features</a></li>
+            <li><a href="/logout" class="nav-link">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-wide">
+    <div class="dash-hero">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+            <p class="section-label" style="margin-bottom:0;">Your Dashboard</p>
+            <span style="font-size:14px;">👋</span>
+        </div>
+        <h1 class="page-title">Welcome Back!</h1>
+        <p style="color:var(--text-light);font-size:16px;margin-top:8px;">
+            Analyze your resume, discover job matches, and track your career progress.
+        </p>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));">
+        <div class="dash-card">
+            <div class="dash-card-icon">📄</div>
+            <h3>Upload Resume</h3>
+            <p>Upload PDF, DOCX, or image and get instant AI-powered skill extraction and personalized job recommendations.</p>
+            <a href="/upload" class="btn-primary" style="margin-top:auto;">
+                Upload Now →
+            </a>
+        </div>
+
+        <div class="dash-card">
+            <div class="dash-card-icon">📊</div>
+            <h3>View History</h3>
+            <p>Browse all your past resume uploads, extracted skills, timestamps, and match scores.</p>
+            <a href="/history" class="btn-primary" style="margin-top:auto;">
+                View History →
+            </a>
+        </div>
+
+        <div class="dash-card">
+            <div class="dash-card-icon">🚀</div>
+            <h3>Job Matching</h3>
+            <p>Get ranked job recommendations across 8 domains — IT, Finance, Healthcare, Marketing, and more.</p>
+            <a href="/upload" class="btn-primary" style="margin-top:auto;">
+                Get Matches →
+            </a>
+        </div>
+
+        <div class="dash-card">
+            <div class="dash-card-icon">🎓</div>
+            <h3>Learning Resources</h3>
+            <p>Access curated courses from Coursera, Udemy, Google, and more to bridge your skill gaps.</p>
+            <a href="/upload" class="btn-primary" style="margin-top:auto;">
+                Start Learning →
+            </a>
+        </div>
+    </div>
+
+    <!-- Domains We Support -->
+    <div style="margin-top:56px;">
+        <p class="section-label">Industry Domains</p>
+        <h2 style="font-size:28px;margin-bottom:24px;">Domains We Support</h2>
+        
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;">
+            <div class="feature-item" style="padding:24px;display:flex;align-items:center;gap:16px;">
+                <div style="font-size:32px;">💻</div>
+                <div>
+                    <h4 style="font-size:15px;margin-bottom:4px;">IT & Software</h4>
+                    <p style="font-size:12px;color:var(--text-light);">35+ job roles</p>
+                </div>
+            </div>
+            <div class="feature-item" style="padding:24px;display:flex;align-items:center;gap:16px;">
+                <div style="font-size:32px;">💰</div>
+                <div>
+                    <h4 style="font-size:15px;margin-bottom:4px;">Finance & Accounting</h4>
+                    <p style="font-size:12px;color:var(--text-light);">23+ job roles</p>
+                </div>
+            </div>
+            <div class="feature-item" style="padding:24px;display:flex;align-items:center;gap:16px;">
+                <div style="font-size:32px;">🏥</div>
+                <div>
+                    <h4 style="font-size:15px;margin-bottom:4px;">Healthcare & Medical</h4>
+                    <p style="font-size:12px;color:var(--text-light);">18+ job roles</p>
+                </div>
+            </div>
+            <div class="feature-item" style="padding:24px;display:flex;align-items:center;gap:16px;">
+                <div style="font-size:32px;">📈</div>
+                <div>
+                    <h4 style="font-size:15px;margin-bottom:4px;">Marketing & Sales</h4>
+                    <p style="font-size:12px;color:var(--text-light);">22+ job roles</p>
+                </div>
+            </div>
+            <div class="feature-item" style="padding:24px;display:flex;align-items:center;gap:16px;">
+                <div style="font-size:32px;">🎨</div>
+                <div>
+                    <h4 style="font-size:15px;margin-bottom:4px;">Design & Creative</h4>
+                    <p style="font-size:12px;color:var(--text-light);">18+ job roles</p>
+                </div>
+            </div>
+            <div class="feature-item" style="padding:24px;display:flex;align-items:center;gap:16px;">
+                <div style="font-size:32px;">⚙️</div>
+                <div>
+                    <h4 style="font-size:15px;margin-bottom:4px;">Engineering</h4>
+                    <p style="font-size:12px;color:var(--text-light);">21+ job roles</p>
+                </div>
+            </div>
+            <div class="feature-item" style="padding:24px;display:flex;align-items:center;gap:16px;">
+                <div style="font-size:32px;">📚</div>
+                <div>
+                    <h4 style="font-size:15px;margin-bottom:4px;">Education & Research</h4>
+                    <p style="font-size:12px;color:var(--text-light);">17+ job roles</p>
+                </div>
+            </div>
+            <div class="feature-item" style="padding:24px;display:flex;align-items:center;gap:16px;">
+                <div style="font-size:32px;">👥</div>
+                <div>
+                    <h4 style="font-size:15px;margin-bottom:4px;">HR & Administration</h4>
+                    <p style="font-size:12px;color:var(--text-light);">13+ job roles</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works -->
+    <div style="margin-top:56px;">
+        <p class="section-label">Getting Started</p>
+        <h2 style="font-size:28px;margin-bottom:24px;">How It Works</h2>
+        
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
+            <div class="about-step" style="flex-direction:column;text-align:center;padding:32px;">
+                <div class="step-num" style="margin:0 auto 16px;">1</div>
+                <h4 style="margin-bottom:8px;">Upload Resume</h4>
+                <p style="font-size:13px;color:var(--text-light);">Upload PDF, DOCX, PNG, or JPG file</p>
+            </div>
+            <div class="about-step" style="flex-direction:column;text-align:center;padding:32px;">
+                <div class="step-num" style="margin:0 auto 16px;">2</div>
+                <h4 style="margin-bottom:8px;">AI Extraction</h4>
+                <p style="font-size:13px;color:var(--text-light);">NLP extracts skills from your resume</p>
+            </div>
+            <div class="about-step" style="flex-direction:column;text-align:center;padding:32px;">
+                <div class="step-num" style="margin:0 auto 16px;">3</div>
+                <h4 style="margin-bottom:8px;">Get Matched</h4>
+                <p style="font-size:13px;color:var(--text-light);">100+ jobs matched to your skills</p>
+            </div>
+            <div class="about-step" style="flex-direction:column;text-align:center;padding:32px;">
+                <div class="step-num" style="margin:0 auto 16px;">4</div>
+                <h4 style="margin-bottom:8px;">Learn & Grow</h4>
+                <p style="font-size:13px;color:var(--text-light);">Curated resources to bridge gaps</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div style="margin-top:56px;padding:40px;background:linear-gradient(135deg,var(--orange-pale),#fff);border:1px solid var(--border);border-radius:var(--radius-xl);">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:32px;text-align:center;">
+            <div>
+                <div style="font-size:36px;font-weight:800;color:var(--orange);font-family:'Syne',sans-serif;">100+</div>
+                <div style="font-size:13px;color:var(--text-light);margin-top:4px;">Job Roles</div>
+            </div>
+            <div>
+                <div style="font-size:36px;font-weight:800;color:var(--orange);font-family:'Syne',sans-serif;">8</div>
+                <div style="font-size:13px;color:var(--text-light);margin-top:4px;">Industry Domains</div>
+            </div>
+            <div>
+                <div style="font-size:36px;font-weight:800;color:var(--orange);font-family:'Syne',sans-serif;">200+</div>
+                <div style="font-size:13px;color:var(--text-light);margin-top:4px;">Skills Detected</div>
+            </div>
+            <div>
+                <div style="font-size:36px;font-weight:800;color:var(--orange);font-family:'Syne',sans-serif;">500+</div>
+                <div style="font-size:13px;color:var(--text-light);margin-top:4px;">Learning Resources</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

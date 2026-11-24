@@ -1,0 +1,9 @@
+flask
+pymongo
+werkzeug
+nltk
+scikit-learn
+pdfplumber
+python-docx
+pillow
+pytesseract

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="glass-card">
+    <h2 class="title">Upload Resume</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div style="padding: 10px; margin-bottom: 15px; border-radius: 8px; text-align: center; 
+              {% if category == 'error' %}background: #ffebee; color: #c62828;{% else %}background: #e8f5e9; color: #2e7d32;{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
+    <input type="file" name="resume" required>
+    <button class="btn">Analyze Resume</button>
+
+    <div class="loading-bar" id="loadingBar">
+        <span></span>
+    </div>
+</form>
+
+<div class="progress-circle" id="progressCircle"></div>
+
+<script>
+function showLoading() {
+    document.getElementById("loadingBar").style.display = "block";
+    document.getElementById("progressCircle").style.display = "block";
+}
+</script>
+
+    {% if skills %}
+    <div class="link">
+        <h3>Extracted Skills</h3>
+        <p>{{ skills }}</p>
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
