@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Results — SkillMatch</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    <div class="glow-overlay"></div>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">SkillMatch</div>
+        <ul class="nav-menu">
+            <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+            <li><a href="/upload" class="nav-link">Upload</a></li>
+            <li><a href="/history" class="nav-link">History</a></li>
+            <li><a href="/logout" class="nav-link">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-wide">
+
+    <a href="/dashboard" class="btn-secondary" style="margin-bottom:28px;display:inline-flex;">← Back</a>
+
+    <p class="section-label">Analysis Complete</p>
+    <h1 class="page-title">Your Career Matches</h1>
+    <p class="page-subtitle">
+        Based on <strong>{{ skills|length }}</strong> skill{{ 's' if skills|length != 1 else '' }} extracted from your resume
+        {% if primary_domain %}
+        • Primary Domain: <strong style="color:var(--orange);">{{ primary_domain }}</strong>
+        {% endif %}
+    </p>
+
+    <!-- Domain Advice -->
+    {% if domain_advice %}
+    <div class="confidence-msg" style="margin-bottom:28px;">
+        <strong>💡 Career Insight:</strong> {{ domain_advice }}
+    </div>
+    {% endif %}
+
+    <!-- Extracted Skills -->
+    <div style="margin-bottom:36px;">
+        <p class="section-label">Your Extracted Skills</p>
+        <div>
+            {% for skill in skills %}
+                <span class="skill-tag">{{ skill }}</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if top_jobs %}
+    {% set best = top_jobs[0] %}
+
+    <!-- Best Match -->
+    <div class="best-match-card">
+        <div class="label">🎯 Best Match For You</div>
+        <h2>{{ best.title }}</h2>
+        <span class="domain-badge">{{ best.domain }}</span>
+        <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;">
+            <div>
+                <div class="score">{{ "%.0f"|format(best.score) }}<span>% match</span></div>
+            </div>
+        </div>
+        <div class="message">💬 {{ best.message }}</div>
+    </div>
+
+    <!-- Top Jobs with Skill Gap - Show more matches -->
+    <p class="section-label" style="margin-bottom:16px;">Top {{ top_jobs|length }} Job Matches & Skill Gaps</p>
+    <div class="jobs-grid">
+    {% for job in top_jobs %}
+    <div class="confidence-card">
+        <div class="job-header">
+            <h4>{{ job.title }}</h4>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:11px;color:var(--text-light);">{{ job.domain }}</span>
+                {% if job.score >= 55 %}
+                <span class="score-badge high">{{ "%.1f"|format(job.score) }}%</span>
+                {% elif job.score >= 40 %}
+                <span class="score-badge medium">{{ "%.1f"|format(job.score) }}%</span>
+                {% else %}
+                <span class="score-badge low">{{ "%.1f"|format(job.score) }}%</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width:{{ job.score }}%"></div>
+        </div>
+
+        <div class="confidence-msg">
+            <strong>{{ job.match_description }}</strong><br>
+            {{ job.message }}
+        </div>
+
+        {% if job.gap %}
+        <div style="margin-top:12px;">
+            <p style="font-size:11px;font-weight:700;color:var(--text-light);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:6px;">Skills to acquire:</p>
+            {% for skill in job.gap[:5] %}
+                <span class="skill-tag-missing">+ {{ skill }}</span>
+            {% endfor %}
+            {% if job.gap|length > 5 %}
+            <span style="font-size:11px;color:var(--text-light);">+{{ job.gap|length - 5 }} more</span>
+            {% endif %}
+        </div>
+        {% else %}
+        <p style="font-size:12px;color:#1a7a32;font-weight:600;margin-top:10px;">✅ You have all the required skills for this role!</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+    </div>
+
+    <!-- All Jobs - More comprehensive list -->
+    {% if all_jobs|length > top_jobs|length %}
+    <div style="margin-top:40px;">
+        <p class="section-label">More Job Matches ({{ all_jobs|length }} total)</p>
+        <div class="jobs-compact-list">
+        {% for job in all_jobs %}
+        <div class="job-list-item-compact">
+            <div class="job-info">
+                <div class="job-title-compact">{{ job.title }}</div>
+                <div class="job-domain-compact">{{ job.domain }}</div>
+            </div>
+            {% if job.score >= 55 %}
+            <span class="score-badge high">{{ "%.1f"|format(job.score) }}%</span>
+            {% elif job.score >= 40 %}
+            <span class="score-badge medium">{{ "%.1f"|format(job.score) }}%</span>
+            {% else %}
+            <span class="score-badge low">{{ "%.1f"|format(job.score) }}%</span>
+            {% endif %}
+        </div>
+        {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div style="text-align:center;padding:48px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);">
+        <div style="font-size:40px;margin-bottom:16px;">🔍</div>
+        <p style="font-size:15px;font-weight:600;color:var(--text-dark);">No strong matches found</p>
+        <p style="font-size:13px;color:var(--text-light);margin-top:6px;">Try uploading a resume with more detailed skills listed.</p>
+        <a href="/upload" class="btn-primary" style="width:auto;display:inline-flex;margin-top:20px;">Upload Again</a>
+    </div>
+    {% endif %}
+
+    <!-- Learning Resources -->
+    {% if resources %}
+    <div style="margin-top:40px;">
+        <p class="section-label">Learning Resources</p>
+        <p style="font-size:14px;color:var(--text-light);margin-bottom:20px;">Curated courses to sharpen your skills and close the gap:</p>
+        {% for skill, res_list in resources.items() %}
+        <div class="resource-card">
+            <h4>{{ skill | capitalize }}</h4>
+            <div>
+                {% for res in res_list %}
+                    <a href="{{ res.url }}" target="_blank" class="resource-link">{{ res.platform }} — {{ res.course }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+
+<script>
+window.addEventListener('load', function() {
+    document.querySelectorAll('.progress-bar-fill').forEach(function(bar) {
+        const width = bar.style.width;
+        bar.style.width = '0%';
+        setTimeout(function() { bar.style.width = width; }, 200);
+    });
+});
+</script>
+
+</body>
+</html>

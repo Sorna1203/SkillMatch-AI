@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — SkillMatch</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    <div class="glow-overlay"></div>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">SkillMatch</div>
+        <ul class="nav-menu">
+            <li><a href="/" class="nav-link">Home</a></li>
+            <li><a href="/features" class="nav-link">Features</a></li>
+            <li><a href="/contact" class="nav-link active">Contact</a></li>
+            <li><a href="/register" class="nav-link" style="background:var(--orange-pale);color:var(--orange-deep);">Get Started</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-center">
+    <div class="glass-card" style="max-width:500px;">
+
+        <p class="section-label">Get In Touch</p>
+        <h2 style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-0.5px;color:var(--text-dark);margin-bottom:6px;">Contact Us</h2>
+        <p style="font-size:13px;color:var(--text-light);margin-bottom:28px;">Have a question or feedback? We'd love to hear from you.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST" autocomplete="off">
+            <div class="field">
+                <input type="text" name="name" required placeholder=" " autocomplete="off">
+                <label>Your Name</label>
+            </div>
+            <div class="field">
+                <input type="email" name="email" required placeholder=" " autocomplete="off">
+                <label>Email Address</label>
+            </div>
+            <div class="field">
+                <input type="text" name="subject" required placeholder=" " autocomplete="off">
+                <label>Subject</label>
+            </div>
+            <div class="field">
+                <textarea name="message" required placeholder=" " rows="4" style="padding-top:14px;"></textarea>
+                <label style="top:14px;transform:none;">Message</label>
+            </div>
+            <button type="submit" class="btn-primary">Send Message →</button>
+        </form>
+
+        <div class="contact-info-row">
+            <div class="contact-info-item">
+                <div class="ci-icon">📧</div>
+                <span>support@skillmatch.com</span>
+            </div>
+            <div class="contact-info-item">
+                <div class="ci-icon">📞</div>
+                <span>+91 98765 43210</span>
+            </div>
+            <div class="contact-info-item">
+                <div class="ci-icon">📍</div>
+                <span>Chennai, Tamil Nadu, India</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

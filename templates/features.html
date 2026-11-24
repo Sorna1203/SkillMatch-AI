@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features — SkillMatch</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    <div class="glow-overlay"></div>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">SkillMatch</div>
+        <ul class="nav-menu">
+            <li><a href="/" class="nav-link">Home</a></li>
+            <li><a href="/features" class="nav-link active">Features</a></li>
+            <li><a href="/contact" class="nav-link">Contact</a></li>
+            <li><a href="/register" class="nav-link" style="background:var(--orange-pale);color:var(--orange-deep);">Get Started</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-wide">
+
+    <div style="text-align:center;max-width:600px;margin:0 auto 52px;">
+        <p class="section-label">What We Offer</p>
+        <h1 class="page-title" style="font-size:38px;">Built for every career path</h1>
+        <p style="font-size:15px;color:var(--text-light);line-height:1.7;">SkillMatch works across all industries — not just tech. Whether you're a nurse, accountant, marketer, or engineer, we've got you covered.</p>
+    </div>
+
+    <div class="feature-grid">
+        <div class="feature-item">
+            <div class="icon">🔍</div>
+            <h3>Multi-Format Parsing</h3>
+            <p>Extract skills from PDF, Word (.docx), and even image-based resumes using OCR technology.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon">🧠</div>
+            <h3>NLP Skill Extraction</h3>
+            <p>Advanced tokenisation and stopword filtering detect 100+ skills across single and multi-word phrases like "machine learning" or "financial modeling".</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon">🎯</div>
+            <h3>AI Job Matching</h3>
+            <p>TF-IDF cosine similarity ranks 35+ job roles from your field. Your primary domain gets priority in recommendations.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon">📊</div>
+            <h3>Match Score & Progress Bar</h3>
+            <p>Visual match percentage with animated progress bars shows exactly how strong your profile is for each role.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon">🔎</div>
+            <h3>Skill Gap Analysis</h3>
+            <p>See exactly which skills you're missing for your top 5 job matches — no guessing required.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon">💬</div>
+            <h3>Confidence Messages</h3>
+            <p>"Learn TensorFlow and PyTorch and Data Scientist is within your reach" — personalised, actionable guidance.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon">📚</div>
+            <h3>Curated Learning Resources</h3>
+            <p>Courses from Coursera, Google, Udemy, HubSpot, MongoDB University, and more — tailored to your exact gaps.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon">🏭</div>
+            <h3>8 Industry Domains</h3>
+            <p>IT & Software, Finance, Healthcare, Marketing, Design, Engineering, Education, and Soft Skills — all supported.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon">🗂️</div>
+            <h3>Upload History</h3>
+            <p>View all past uploads with skills, dates, and a delete option. Clean card layout with full details.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon">🔐</div>
+            <h3>Secure Authentication</h3>
+            <p>Password hashing with Werkzeug, session management, and email validation keep your account safe.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon">📱</div>
+            <h3>Responsive Design</h3>
+            <p>Fully responsive layout that works on desktop, tablet, and mobile devices seamlessly.</p>
+        </div>
+        <div class="feature-item">
+            <div class="icon">⚡</div>
+            <h3>Fast Analysis</h3>
+            <p>Results in seconds — animated loading bar, clear feedback, and instant recommendations.</p>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div style="text-align:center;margin-top:60px;padding:48px 32px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm);">
+        <h2 style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;letter-spacing:-0.5px;color:var(--text-dark);margin-bottom:10px;">Ready to discover your best-fit career?</h2>
+        <p style="font-size:15px;color:var(--text-light);margin-bottom:28px;">Join and upload your first resume — it's completely free.</p>
+        <a href="/register" class="btn-hero btn-hero-primary" style="display:inline-flex;width:auto;">Create Free Account →</a>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Resume — SkillMatch</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    <div class="glow-overlay"></div>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">SkillMatch</div>
+        <ul class="nav-menu">
+            <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+            <li><a href="/upload" class="nav-link active">Upload</a></li>
+            <li><a href="/history" class="nav-link">History</a></li>
+            <li><a href="/logout" class="nav-link">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-center">
+    <div class="glass-card" style="max-width:520px;">
+        <a href="/dashboard" class="btn-secondary" style="margin-bottom:24px;display:inline-flex;">
+            <span>←</span> Back
+        </a>
+
+        <p class="section-label">Analyse Your Resume</p>
+        <h2 style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;letter-spacing:-0.5px;color:var(--text-dark);margin-bottom:8px;">
+            Upload Resume
+        </h2>
+        <p style="font-size:14px;color:var(--text-light);margin-bottom:32px;">
+            We'll extract your skills and match you with the best jobs in your field using AI-powered analysis.
+        </p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
+            <!-- File Drop Zone -->
+            <div class="file-drop" id="dropZone">
+                <input type="file" name="resume" accept=".pdf,.docx,.png,.jpg,.jpeg" required id="fileInput" onchange="updateLabel(this)">
+                <div class="drop-icon">📎</div>
+                <div class="drop-text" id="dropLabel">Click to choose file or drag & drop</div>
+                <div class="drop-hint">PDF, DOCX, PNG, JPG • Max 10MB</div>
+            </div>
+
+            <!-- File Preview -->
+            <div id="filePreview" style="display:none;margin-bottom:20px;padding:16px;background:var(--orange-pale);border-radius:var(--radius-md);">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <span style="font-size:24px;">📄</span>
+                    <div>
+                        <div id="fileName" style="font-weight:600;color:var(--text-dark);"></div>
+                        <div id="fileSize" style="font-size:12px;color:var(--text-light);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-primary" id="submitBtn">
+                <span id="submitText">Analyse Resume →</span>
+                <span id="submitIcon"></span>
+            </button>
+
+            <!-- Loading Bar -->
+            <div class="loading-bar" id="loadingBar">
+                <span></span>
+            </div>
+        </form>
+
+        <!-- Supported Fields -->
+        <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border);">
+            <p style="font-size:13px;color:var(--text-mid);font-weight:700;margin-bottom:14px;">
+                🎯 Works for all fields including:
+            </p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                {% for tag in ["IT & Software","Finance","Healthcare","Marketing","Engineering","Design","Education","HR"] %}
+                <span class="skill-tag" style="font-size:11px;padding:4px 12px;">{{ tag }}</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Tips -->
+        <div style="margin-top:24px;padding:20px;background:var(--orange-pale);border-radius:var(--radius-md);border:1px solid rgba(255,140,66,0.15);">
+            <p style="font-size:13px;font-weight:700;color:var(--text-dark);margin-bottom:8px;">
+                💡 Tips for best results:
+            </p>
+            <ul style="font-size:12px;color:var(--text-light);line-height:1.8;padding-left:16px;">
+                <li>Make sure your resume clearly lists your skills</li>
+                <li>Use standard file formats (PDF preferred)</li>
+                <li>Include both technical and soft skills</li>
+                <li>Mention tools and technologies you use</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    // File input handling
+    function updateLabel(input) {
+        const label = document.getElementById('dropLabel');
+        const preview = document.getElementById('filePreview');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            label.textContent = file.name;
+            label.style.color = 'var(--orange-deep)';
+            
+            // Show preview
+            preview.style.display = 'block';
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+        }
+    }
+    
+    function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' bytes';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    }
+    
+    // Drag and drop
+    const dropZone = document.getElementById('dropZone');
+    
+    dropZone.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    });
+    
+    dropZone.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+    });
+    
+    dropZone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        
+        const fileInput = document.getElementById('fileInput');
+        const files = e.dataTransfer.files;
+        
+        if (files.length > 0) {
+            fileInput.files = files;
+            updateLabel(fileInput);
+        }
+    });
+    
+    // Loading state
+    function showLoading() {
+        document.getElementById('loadingBar').style.display = 'block';
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('submitText').textContent = 'Analysing...';
+        document.getElementById('submitBtn').style.opacity = '0.7';
+    }
+</script>
+
+</body>
+</html>

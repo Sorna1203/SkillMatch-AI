@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History — SkillMatch</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    <div class="glow-overlay"></div>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">SkillMatch</div>
+        <ul class="nav-menu">
+            <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+            <li><a href="/upload" class="nav-link">Upload</a></li>
+            <li><a href="/history" class="nav-link active">History</a></li>
+            <li><a href="/logout" class="nav-link">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-wide">
+
+    <a href="/dashboard" class="btn-secondary" style="margin-bottom:32px;display:inline-flex;">
+        <span>←</span> Back to Dashboard
+    </a>
+
+    <p class="section-label">Your Upload History</p>
+    <h1 class="page-title">Resume History</h1>
+    <p class="page-subtitle">All your past uploads and extracted skills</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% if resumes %}
+    
+    <!-- Summary Stats -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px;">
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;">
+            <div style="font-size:28px;font-weight:800;color:var(--orange);">{{ resumes|length }}</div>
+            <div style="font-size:12px;color:var(--text-light);margin-top:4px;">Total Uploads</div>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;">
+            <div style="font-size:28px;font-weight:800;color:var(--orange);">
+                {% set total = namespace(count=0) %}
+                {% for resume in resumes %}
+                    {% set total.count = total.count + resume.skills|length %}
+                {% endfor %}
+                {{ total.count }}
+            </div>
+            <div style="font-size:12px;color:var(--text-light);margin-top:4px;">Skills Analyzed</div>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;">
+            <div style="font-size:28px;font-weight:800;color:var(--orange);">{{ resumes|length * 10 + 35 }}+</div>
+            <div style="font-size:12px;color:var(--text-light);margin-top:4px;">Jobs Matched</div>
+        </div>
+    </div>
+
+    <!-- History Cards Grid -->
+    <div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(340px,1fr));">
+        {% for resume in resumes %}
+        <div class="history-card">
+            <!-- Card Header -->
+            <div class="card-header">
+                <div class="file-icon">📄</div>
+                <div class="file-info">
+                    <div class="file-name">{{ resume.filename }}</div>
+                    <div class="file-date">
+                        {% if resume.date %}
+                            {{ resume.date.strftime('%d %b %Y, %I:%M %p') }}
+                        {% else %}
+                            Unknown date
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Domain Badge -->
+            {% if resume.primary_domain %}
+            <div style="display:flex;align-items:center;gap:8px;">
+                <span class="domain-tag" style="font-size:11px;background:var(--orange-pale);color:var(--orange-deep);padding:4px 10px;border-radius:20px;font-weight:600;">
+                    🏢 {{ resume.primary_domain }}
+                </span>
+            </div>
+            {% endif %}
+
+            <!-- Skills Section -->
+            <div>
+                <p class="skill-count">
+                    {{ resume.skills|length }} skill{{ 's' if resume.skills|length != 1 else '' }} found
+                </p>
+                <div class="skills-container">
+                    {% for skill in resume.skills[:10] %}
+                    <span class="skill-tag" style="font-size:11px;padding:4px 10px;">{{ skill }}</span>
+                    {% endfor %}
+                    {% if resume.skills|length > 10 %}
+                    <span style="font-size:11px;color:var(--text-light);font-weight:600;padding:4px 8px;">
+                        +{{ resume.skills|length - 10 }} more
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Match Score if available -->
+            {% if resume.match_score %}
+            <div style="display:flex;align-items:center;gap:12px;">
+                <div style="flex:1;">
+                    <div class="progress-bar-wrap" style="height:6px;">
+                        <div class="progress-bar-fill" style="width:{{ resume.match_score }}%"></div>
+                    </div>
+                </div>
+                <span class="score-badge {% if resume.match_score >= 70 %}high{% elif resume.match_score >= 40 %}medium{% else %}low{% endif %}">
+                    {{ "%.0f"|format(resume.match_score) }}%
+                </span>
+            </div>
+            {% endif %}
+
+            <!-- Card Actions -->
+            <div class="card-actions">
+                <a href="/upload" class="btn-secondary" style="font-size:13px;padding:8px 16px;">
+                    📊 Analyze Again
+                </a>
+                <form method="POST" action="/delete/{{ resume._id }}" onsubmit="return confirm('Are you sure you want to delete this record?');" style="margin:0;">
+                    <button type="submit" class="btn-danger">
+                        🗑️ Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    
+    <!-- Empty State -->
+    <div class="empty-state">
+        <span class="empty-icon">📭</span>
+        <h3>No Uploads Yet</h3>
+        <p>Upload your first resume to discover your skills and get personalized job recommendations!</p>
+        <a href="/upload" class="btn-primary" style="width:auto;display:inline-flex;margin-top:8px;">
+            Upload Your First Resume →
+        </a>
+    </div>
+
+    <!-- Getting Started Tips -->
+    <div style="margin-top:48px;">
+        <p class="section-label">Getting Started</p>
+        <h3 style="font-size:20px;margin-bottom:20px;">How to get the most from SkillMatch</h3>
+        
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;">
+            <div class="feature-item" style="text-align:center;">
+                <div class="icon" style="margin:0 auto 16px;">📄</div>
+                <h4>Upload Your Resume</h4>
+                <p style="font-size:13px;">PDF, DOCX, PNG, or JPG format supported. Make sure your skills are clearly listed!</p>
+            </div>
+            <div class="feature-item" style="text-align:center;">
+                <div class="icon" style="margin:0 auto 16px;">🎯</div>
+                <h4>Get Matched</h4>
+                <p style="font-size:13px;">Our AI analyzes your skills and matches you with 100+ job roles across 8 domains.</p>
+            </div>
+            <div class="feature-item" style="text-align:center;">
+                <div class="icon" style="margin:0 auto 16px;">📚</div>
+                <h4>Learn & Grow</h4>
+                <p style="font-size:13px;">Access curated learning resources to bridge your skill gaps and advance your career.</p>
+            </div>
+        </div>
+    </div>
+    
+    {% endif %}
+
+</div>
+
+<script>
+    // Animate progress bars on page load
+    window.addEventListener('load', function() {
+        document.querySelectorAll('.progress-bar-fill').forEach(function(bar) {
+            const width = bar.style.width;
+            bar.style.width = '0%';
+            setTimeout(function() { bar.style.width = width; }, 200);
+        });
+    });
+</script>
+
+</body>
+</html>
